@@ -1,0 +1,33 @@
+[2024-10-17T09:43:35.650+0000] {taskinstance.py:1979} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: etl_from_local_to_postgres.load_data manual__2024-10-17T09:43:28.171500+00:00 [queued]>
+[2024-10-17T09:43:35.663+0000] {taskinstance.py:1979} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: etl_from_local_to_postgres.load_data manual__2024-10-17T09:43:28.171500+00:00 [queued]>
+[2024-10-17T09:43:35.664+0000] {taskinstance.py:2193} INFO - Starting attempt 1 of 1
+[2024-10-17T09:43:35.685+0000] {taskinstance.py:2217} INFO - Executing <Task(PythonOperator): load_data> on 2024-10-17 09:43:28.171500+00:00
+[2024-10-17T09:43:35.691+0000] {standard_task_runner.py:60} INFO - Started process 523 to run task
+[2024-10-17T09:43:35.695+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'etl_from_local_to_postgres', 'load_data', 'manual__2024-10-17T09:43:28.171500+00:00', '--job-id', '656', '--raw', '--subdir', 'DAGS_FOLDER/etl.py', '--cfg-path', '/tmp/tmpnk1ufctm']
+[2024-10-17T09:43:35.697+0000] {standard_task_runner.py:88} INFO - Job 656: Subtask load_data
+[2024-10-17T09:43:35.758+0000] {task_command.py:423} INFO - Running <TaskInstance: etl_from_local_to_postgres.load_data manual__2024-10-17T09:43:28.171500+00:00 [running]> on host 9c093e78d1a2
+[2024-10-17T09:43:35.845+0000] {taskinstance.py:2513} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='etl_from_local_to_postgres' AIRFLOW_CTX_TASK_ID='load_data' AIRFLOW_CTX_EXECUTION_DATE='2024-10-17T09:43:28.171500+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-10-17T09:43:28.171500+00:00'
+[2024-10-17T09:43:35.943+0000] {base.py:83} INFO - Using connection ID 'project_connection' for task execution.
+[2024-10-17T09:43:36.031+0000] {taskinstance.py:2731} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/models/taskinstance.py", line 444, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/models/taskinstance.py", line 414, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/operators/python.py", line 200, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/operators/python.py", line 217, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/etl.py", line 96, in load_data
+    cursor.execute('TRUNCATE TABLE dim.dim_projects')
+psycopg2.errors.FeatureNotSupported: cannot truncate a table referenced in a foreign key constraint
+DETAIL:  Table "fct_tasks" references "dim_projects".
+HINT:  Truncate table "fct_tasks" at the same time, or use TRUNCATE ... CASCADE.
+
+[2024-10-17T09:43:36.046+0000] {taskinstance.py:1149} INFO - Marking task as FAILED. dag_id=etl_from_local_to_postgres, task_id=load_data, execution_date=20241017T094328, start_date=20241017T094335, end_date=20241017T094336
+[2024-10-17T09:43:36.063+0000] {standard_task_runner.py:107} ERROR - Failed to execute job 656 for task load_data (cannot truncate a table referenced in a foreign key constraint
+DETAIL:  Table "fct_tasks" references "dim_projects".
+HINT:  Truncate table "fct_tasks" at the same time, or use TRUNCATE ... CASCADE.
+; 523)
+[2024-10-17T09:43:36.113+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 1
+[2024-10-17T09:43:36.136+0000] {taskinstance.py:3312} INFO - 0 downstream tasks scheduled from follow-on schedule check
